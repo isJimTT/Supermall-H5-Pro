@@ -1,12 +1,23 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
-    <home-swiper :banners = "banners"></home-swiper>
-    <recommend-view :recommends="recommends"></recommend-view>
-    <feature-view></feature-view>
-    <tab-control :titles="['流行', '新款', '精选']"
-    class="tab-control" @tabClick = tabClick></tab-control>
-    <goods-list :goods = "showGoods"></goods-list>
+
+    <scroll class="content"
+    ref = "scroll"
+    :probe-type="3"
+    @scroll="contentScroll"
+    :pull-up-load="true"
+    @pullingUp="loadMore">
+      <home-swiper :banners = "banners"></home-swiper>
+      <recommend-view :recommends="recommends"></recommend-view>
+      <feature-view></feature-view>
+      <tab-control :titles="['流行', '新款', '精选']"
+      class="tab-control" @tabClick = tabClick></tab-control>
+      <goods-list :goods = "showGoods"></goods-list>
+    </scroll>
+
+    <back-top @click.native = backTopClick v-show="isShow"></back-top>
+
   </div>
 </template>
 
@@ -19,6 +30,8 @@
   import NavBar from 'components/common/navbar/NavBar';
   import TabControl from 'components/content/tabControl/tabControl.vue'
   import GoodsList from 'components/content/goods/GoodsList.vue'
+  import Scroll from "components/common/scroll/Scroll.vue";
+  import BackTop from "components/content/backTop/BackTop.vue"
 
   import { getHomeMultidata, getHomeGoods } from 'network/home/';
 
@@ -33,7 +46,8 @@ export default {
         'new': {page: 0, list: []},
         'sell': {page: 0, list: []}
       },
-      currentType: 'pop'
+      currentType: 'pop',
+      isShow: false
     }
   },
   components: {
@@ -44,7 +58,9 @@ export default {
 
     NavBar,
     TabControl,
-    GoodsList
+    GoodsList,
+    Scroll,
+    BackTop
   },
   created() {
     // 1.请求recommend和banner数据
@@ -75,6 +91,15 @@ export default {
          break
       }
     },
+    backTopClick() {
+      this.$refs.scroll.backTopClick(0, 0, 500)
+    },
+    contentScroll(position) {
+      this.isShow = -(position.y) > 1000
+    },
+    loadMore() {
+      this.getHomeGoods(this.currentType)
+    },
 
     /**
      * 网络请求相关
@@ -91,6 +116,8 @@ export default {
       getHomeGoods(type, page).then(res => {
         this.goods[type].list.push(...res.data.list)
         this.goods[type].page += 1
+
+        this.$refs.scroll.finishPullUp()
       })
     }
   }
@@ -100,8 +127,9 @@ export default {
 
 <style scoped>
 #home {
-  height: 2000px;
+  height: 100vh;
   padding-top: 44px;
+  position: relative;
 }
   .home-nav {
     background-color: var(--color-tint);
@@ -118,5 +146,13 @@ export default {
     top: 44px;
     z-index: 9;
     background-color: #fff;
+  }
+  .content {
+    position: absolute;
+    top: 44px;
+    bottom: 49px;
+    left: 0;
+    right: 0;
+    overflow: hidden;
   }
 </style>
