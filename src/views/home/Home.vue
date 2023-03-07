@@ -44,7 +44,6 @@
 
   import { getHomeMultidata, getHomeGoods } from 'network/home/';
   import { debounce } from "common/utils";
-import { onDeactivated } from "vue";
 
 export default {
   name: "Home",
@@ -95,12 +94,12 @@ export default {
     })
   },
   activated() {
-    this.$refs.scroll.scrollTo(0, this.saveY, 0)
-    this.$refs.scroll.refresh()
+    // this.$refs.scroll.scrollTo(0, this.saveY, 0)
+    // this.$refs.scroll.refresh()
 
   },
   Deactivated() {
-    this.saveY = this.$refs.scroll.scroll.y
+    // this.saveY = this.$refs.scroll.scroll.y
   },
   computed: {
     showGoods() {

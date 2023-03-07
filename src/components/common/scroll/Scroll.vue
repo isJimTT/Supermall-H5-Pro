@@ -51,7 +51,7 @@ export default {
       this.scroll && this.scroll.finishPullUp()
     },
     itemImageRefresh() {
-      console.log("---------");
+      // console.log("---------");
       this.scroll && this.scroll.refresh()
     }
   }
