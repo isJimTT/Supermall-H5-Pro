@@ -126,7 +126,7 @@ export default {
     div {
       font-size: 18px;
       color: #ccc;
-      background-color: #f1f5fb;
+      background-color: #eee;
       width: 180px;
       height: 40px;
       text-align: center;

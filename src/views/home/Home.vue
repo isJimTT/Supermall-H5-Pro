@@ -43,7 +43,7 @@
   import BackTop from "components/content/backTop/BackTop.vue"
 
   import { getHomeMultidata, getHomeGoods } from 'network/home/';
-  import { debounce } from "common/utils";
+  import { itemListenerMixin } from 'common/mixins.js'
 
 export default {
   name: "Home",
@@ -63,6 +63,7 @@ export default {
       saveY: 0
     }
   },
+  mixins: [ itemListenerMixin],
   components: {
 
     HomeSwiper,
@@ -87,11 +88,7 @@ export default {
 
   },
   mounted() {
-    const refresh = debounce(this.$refs.scroll.itemImageRefresh, 500)
 
-    this.$bus.$on('ImageLoad', () => {
-      refresh()
-    })
   },
   activated() {
     // this.$refs.scroll.scrollTo(0, this.saveY, 0)
@@ -100,6 +97,9 @@ export default {
   },
   Deactivated() {
     // this.saveY = this.$refs.scroll.scroll.y
+
+    // 取消全局事件的监听
+    this.$bus.$off('itemImgLoad', this.itemImgListener)
   },
   computed: {
     showGoods() {
