@@ -63,7 +63,7 @@ export default {
       saveY: 0
     }
   },
-  mixins: [ itemListenerMixin],
+  mixins: [itemListenerMixin],
   components: {
 
     HomeSwiper,

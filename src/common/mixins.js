@@ -1,4 +1,5 @@
 import { debounce } from "./utils";
+import BackTop from "components/content/backTop/BackTop.vue"
 
 export const itemListenerMixin = {
   data() {
@@ -12,6 +13,26 @@ export const itemListenerMixin = {
       refresh()
     }
     this.$bus.$on('itemImgLoad', this.itemImgListener)
-    console.log('我是混入');
+  }
+}
+
+export const backTopMixin = {
+  components: {
+    BackTop
+  },
+  data() {
+    return {
+      isShow: false,
+
+    }
+  },
+  methods: {
+    backTopClick() {
+      this.$refs.scroll.backTopClick(0, 0, 500)
+    },
+    isShowBackTop(position) {
+      this.isShow = -(position.y) > 1000
+      console.log(this.isShow)
+    }
   }
 }
