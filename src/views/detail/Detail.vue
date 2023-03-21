@@ -10,7 +10,7 @@
       <detail-goods-comments :rates="rates" ref="comments"/>
       <goods-list :goods="recommends" ref="recommends"/>
     </scroll>
-    <detail-bottom-bar></detail-bottom-bar>
+    <detail-bottom-bar @addCart="addCart"></detail-bottom-bar>
     <back-top @click.native = backTopClick v-show="isShow"></back-top>
 
   </div>
@@ -81,10 +81,26 @@ export default {
         this.$refs.nav.currentIndex = this.currentIndex
       }
 
-      // 1.判断backTop是否显示
+      // 判断backTop是否显示
       this.isShowBackTop(position)
+
+
     },
 
+    // 加入购物车
+    addCart() {
+      //1.获取购物车需要展示的信息
+      const product = {}
+      product.image =this.detailSwiper[0];
+      product.title = this.goods.title;
+      product.desc = this.goods.desc;
+      product.price = this.goods.realPrice;
+      product.iid = this.iid
+
+      // 2.将商品添加到购物车
+      this.$store.dispatch('addCart', product)
+      console.log(this.$store.state.cartList)
+    }
   },
   destroyed() {
     // 取消全局事件的监听

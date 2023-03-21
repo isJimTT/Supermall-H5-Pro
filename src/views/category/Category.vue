@@ -6,7 +6,9 @@
 
 <script>
 export default {
-  name: "Category"
+  name: "Category",
+  components: {
+  }
 }
 </script>
 

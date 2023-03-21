@@ -1,15 +1,34 @@
 <template>
-  <div>
-    <h2>购物车</h2>
+  <div class="content">
+    <nav-bar class="nav-bar">
+      <div slot="center">购物车({{cartLength}})</div>
+    </nav-bar>
   </div>
 </template>
 
 <script>
+
+import NavBar from '@/components/common/navbar/NavBar.vue';
+
 export default {
-  name: "Cart"
+  name: "Cart",
+  components: {
+    NavBar
+  },
+  computed: {
+    cartLength() {
+      return this.$store.state.cartList.length
+    }
+  }
 }
 </script>
 
-<style>
+<style lang="less" scoped>
+
+  .content {
+    .nav-bar {
+      background-color: #ff8f96;
+    }
+  }
 
 </style>
