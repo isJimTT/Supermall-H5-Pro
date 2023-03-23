@@ -1,6 +1,13 @@
 <template>
   <div class="detail">
     <detail-nav-bar class="detail-nav" @titleClick="titleClick" ref="nav"/>
+
+    <Message
+      v-show="isMessageShow"
+      :key="msgKey"
+      msg="加入成功，正在购车等候~"
+    />
+
     <scroll class="content" ref="scroll" @scroll="contentScroll" :probe-type="3">
       <detail-swiper :detailSwiper="detailSwiper"/>
       <detail-base-info :info="goods"/>
@@ -12,6 +19,8 @@
     </scroll>
     <detail-bottom-bar @addCart="addCart"></detail-bottom-bar>
     <back-top @click.native = backTopClick v-show="isShow"></back-top>
+
+
 
   </div>
 </template>
@@ -28,6 +37,7 @@ import GoodsList from '@/components/content/goods/GoodsList.vue'
 import DetailBottomBar from "./childComps/DetailBottomBar"
 
 import Scroll from '@/components/common/scroll/Scroll.vue'
+import Message from '@/components/common/message/Message.vue'
 
 import {getDetail, Goods, Shop, GoodsParams, getRecommend} from 'network/detail.js'
 import { itemListenerMixin, backTopMixin } from 'common/mixins.js'
@@ -45,7 +55,8 @@ export default {
     GoodsList,
     DetailBottomBar,
 
-    Scroll
+    Scroll,
+    Message
   },
   data() {
     return {
@@ -58,7 +69,9 @@ export default {
       rates: {},
       recommends: [],
       NavTopY:[],
-      currentIndex: null
+      currentIndex: null,
+      isMessageShow: false,
+      msgKey: -99
     }
   },
   methods: {
@@ -100,6 +113,9 @@ export default {
       // 2.将商品添加到购物车
       this.$store.dispatch('addCart', product)
       console.log(this.$store.state.cartList)
+
+      this.msgKey++
+      this.isMessageShow = true
     }
   },
   destroyed() {

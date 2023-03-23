@@ -1,15 +1,32 @@
 <template>
   <div>
-    <h2>个人</h2>
+    <TopView />
+    <MiddleView />
+    <BottomView />
   </div>
 </template>
 
 <script>
+import NavBar from '@/components/common/navbar/NavBar'
+import TopView from './components/TopView'
+import MiddleView from './components/MiddleView'
+import BottomView from './components/BottomView'
+
 export default {
-  name: "Profile"
+  name: 'Profile',
+  components: {
+    NavBar,
+    TopView,
+    MiddleView,
+    BottomView
+  }
 }
 </script>
 
-<style>
-
+<style lang="less" scoped>
+.title {
+  background-color: #fe647f;
+  color: #fff;
+  font-size: 19px;
+}
 </style>
